@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 const Wall = React.forwardRef((props:any,ref) => {
-    const { nodes}: any = useGLTF('/wall.gltf')
+    const { nodes }: any = useGLTF(`${import.meta.env.BASE_URL}wall.gltf`)
     return (
         <group ref={ref}{...props} dispose={null}>
             <mesh

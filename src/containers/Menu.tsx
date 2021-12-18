@@ -11,7 +11,7 @@ const Menu = () => {
         <div className="ui grid w-80">
             <div className="bg-gray-100 p-3 border-gray-500">
                 
-                <img src="/stone.jpg" alt="stone" onClick={onClickImage}/>
+                <img src={`stone.jpg`} alt="stone" onClick={onClickImage}/>
                 asdasdsaasda
             </div>
         </div>
