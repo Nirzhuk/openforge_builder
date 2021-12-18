@@ -15,7 +15,7 @@ const MeshWithToolkit = ({ Component, ...props }: any) => {
         ref={ref}
         {...props}
         onClick={(e: any) => setSelected(e.object,ref)}
-        onDrag={(v) => console.log(v.toArray())}
+        onDrag={(v:any) => console.log(v.toArray())}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)} />
 }
@@ -26,7 +26,7 @@ export default function App() {
     useEffect(() => {
         if (transformControls.current) {
             const { current: controls } = transformControls
-            const callback = (e) => console.log(e.target.object.position);
+            const callback = (e:any) => console.log(e.target.object.position);
             controls.addEventListener('dragging-changed', callback)
             return () => controls.removeEventListener('dragging-changed', callback)
         }
