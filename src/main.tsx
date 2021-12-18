@@ -11,4 +11,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 )
+useGLTF.preload(`${process.env.PUBLIC_URL}wall.gltf`)
 
