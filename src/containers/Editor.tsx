@@ -1,36 +1,32 @@
-import { useState, useEffect, useRef, Suspense } from 'react'
-import { Canvas, useLoader } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, GizmoHelper, GizmoViewcube, TransformControls, useCursor, useProgress, useGLTF } from '@react-three/drei'
-import { STLLoader, OBJLoader, TransformControls as TransformControlsImpl } from 'three-stdlib'
-import Wall from './Wall'
+import { useState, useEffect, useRef } from 'react'
+import { Canvas } from '@react-three/fiber'
+import { EffectComposer, Outline } from '@react-three/postprocessing'
+import { OrbitControls, PerspectiveCamera, TransformControls, useCursor } from '@react-three/drei'
+import { TransformControls as TransformControlsImpl } from 'three-stdlib'
 import { useStore } from '../store'
 import { Intro } from './ui/Intro'
 
-
-
-const MeshWithToolkit = ({ Component }: any) => {
-    const setTarget = useStore((state) => state.setTarget)
+const MeshWithToolkit = ({ Component, ...props }: any) => {
+    const setSelected = useStore((state) => state.setSelected)
+    const ref = useRef()
     const [hovered, setHovered] = useState(false)
     useCursor(hovered)
     return <Component
-        onClick={(e: any) => setTarget(e.object)}
+        ref={ref}
+        {...props}
+        onClick={(e: any) => setSelected(e.object,ref)}
+        onDrag={(v) => console.log(v.toArray())}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)} />
 }
 
-function Loader() {
-    const { active, progress, errors, item, loaded, total } = useProgress();
-    return <p>{progress} % loaded</p>;
-}
-
-
 export default function App() {
-    const { target, setTarget } = useStore()
+    const { selected,tiles, actions, transformControlProps, setSelected }:any = useStore()
     const transformControls = useRef<TransformControlsImpl>(null!);
     useEffect(() => {
         if (transformControls.current) {
             const { current: controls } = transformControls
-            const callback = (e) => console.log(e.target.object.position, target.position);
+            const callback = (e) => console.log(e.target.object.position);
             controls.addEventListener('dragging-changed', callback)
             return () => controls.removeEventListener('dragging-changed', callback)
         }
@@ -38,7 +34,10 @@ export default function App() {
 
     useEffect(() => {
         const testFunc = (e: any) => {
-            console.log(target.rotation, e.key);
+            if(e.key.toLowerCase() === 'r') {
+                actions.onTransformControlChange();
+            }
+            
         }
         document.addEventListener("keydown", testFunc)
         return () => {
@@ -46,12 +45,19 @@ export default function App() {
         }
     }, [])
 
+    const renderTiles = () => {
+        console.log(tiles)
+        return tiles.length > 0 &&  tiles.map((tile:any, i:number) => {
+            return <MeshWithToolkit key={i} Component={tile.component} position={tile.position} rotation={tile.rotation} />
+        });
+    }
+    console.log(selected)
     return (
         <Intro>
             <div className="col-end-auto" >
-                <Canvas dpr={[1, 2]} onPointerMissed={() => setTarget(null)}>
-                        <MeshWithToolkit Component={Wall} />
-                    {target && <TransformControls ref={transformControls} showY={true} translationSnap={1} object={target} mode={'rotate'} />}
+                <Canvas dpr={[1, 2]} onPointerMissed={() => setSelected(null)}>
+                    {renderTiles()}
+                    {selected && selected.object && <TransformControls size={0.5} ref={transformControls} translationSnap={1} object={selected.object} {...transformControlProps} />}
                     <PerspectiveCamera makeDefault position={[20, 20, 20]} />
                     <OrbitControls makeDefault />
                     <gridHelper args={[100, 100, `#8f8f8f`, `#1f1f1f`]} />
@@ -60,3 +66,5 @@ export default function App() {
         </Intro>
     )
 }
+
+//Posible change to the movement https://codesandbox.io/s/objective-bash-gpon7?file=/src/Obj.jsx:132-151

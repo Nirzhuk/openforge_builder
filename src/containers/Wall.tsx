@@ -1,11 +1,11 @@
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
+useGLTF.preload('/wall.gltf')
 
-export default function Model(props:any) {
-    const group = useRef()
+const Wall = React.forwardRef((props:any,ref) => {
     const { nodes}: any = useGLTF('/wall.gltf')
     return (
-        <group ref={group} {...props} dispose={null}>
+        <group ref={ref}{...props} dispose={null}>
             <mesh
                 geometry={nodes.dungeon_wall.geometry}
                 material={nodes.dungeon_wall.material}
@@ -14,6 +14,7 @@ export default function Model(props:any) {
             </mesh>
         </group>
     )
-}
+});
 
-useGLTF.preload('/wall.gltf')
+
+export default Wall;

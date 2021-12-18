@@ -28,7 +28,7 @@ export function Intro({ children }: IntroProps): JSX.Element {
         console.log(clicked,ready)
         if (clicked && ready) set({ ready: true })
     }, [ready, clicked])
-
+    console.log(ready);
     return (
         <>
             <Suspense fallback={<Ready setReady={setReady} />}>{children}</Suspense>
