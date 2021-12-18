@@ -1,6 +1,6 @@
 {
   "name": "openforge-builder",
-  "homepage": "https://nirzhuk.github.io/openforge-builder",
+  "homepage": "https://nirzhuk.github.io/openforge_builder",
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
