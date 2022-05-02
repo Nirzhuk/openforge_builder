@@ -11,39 +11,30 @@ function Ready({ setReady }: { setReady: Dispatch<SetStateAction<boolean>> }) {
 }
 
 function Loader() {
-    const { progress } = useProgress()
-    return <div>loading {progress.toFixed()} %</div>
+    const { progress, loaded,total } = useProgress()
+    return (<div className={`text-center fullscreen bg ${loaded ? 'ready' : 'notready'}`}>
+        <div className="stack">
+            <div className="intro-keys">
+                <h1 className="text-5xl">
+                    Openforge Builder
+                </h1>
+                <a className="continue-link" href="#" >
+                    {loaded ?` loading ${progress.toFixed()}%` : 'Click to continue'}
+                </a>
+            </div>
+        </div>
+    </div>)
 }
+
 
 interface IntroProps {
     children: ReactNode
 }
 
 export function Intro({ children }: IntroProps): JSX.Element {
-    const [ready, setReady] = useState(false)
-    const [clicked, setClicked] = useState(false)
-    const [session,set] = useStore((state) => [state.session, state.set])
-
-    useEffect(() => {
-        console.log(clicked,ready)
-        if (clicked && ready) set({ ready: true })
-    }, [ready, clicked])
-    console.log(ready);
     return (
         <>
-            <Suspense fallback={<Ready setReady={setReady} />}>{children}</Suspense>
-            <div className={`text-center fullscreen bg ${ready ? 'ready' : 'notready'} ${clicked && 'clicked'}`}>
-                <div className="stack">
-                    <div className="intro-keys">
-                        <h1 className="text-5xl">
-                            Openforge Builder
-                        </h1>
-                        <a className="continue-link" href="#" onClick={() => ready && setClicked(true)}>
-                            {!ready ? <Loader /> : 'Click to continue'}
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <Suspense fallback={<Loader/>}>{children}</Suspense>
         </>
     )
 }

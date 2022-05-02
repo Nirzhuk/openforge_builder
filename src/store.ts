@@ -66,11 +66,7 @@ const useStore = create((set: any, get: any) => {
             mode: 'translate',
             showY: false
         },
-        tiles: [{
-            position: [0, 0, 0],
-            rotation: [0, 0, 0],
-            component: Wall,
-        }],
+        tiles: [],
         actions
     })
 });

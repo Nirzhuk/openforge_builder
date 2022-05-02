@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { EffectComposer, Outline } from '@react-three/postprocessing'
 import { OrbitControls, PerspectiveCamera, TransformControls, useCursor } from '@react-three/drei'
 import { TransformControls as TransformControlsImpl } from 'three-stdlib'
 import { useStore } from '../store'
@@ -21,14 +20,14 @@ const MeshWithToolkit = ({ Component, ...props }: any) => {
 }
 
 export default function App() {
-    const { selected,tiles, actions, transformControlProps, setSelected }:any = useStore()
+    const { selected, tiles, actions, transformControlProps, setSelected }: any = useStore()
     const transformControls = useRef<TransformControlsImpl>(null!);
     useEffect(() => {
         if (transformControls.current) {
             const { current: controls } = transformControls
-            const callback = (e:any) => console.log(e.target.object.position);
+/*             const callback = (e:any) => console.log(e.target.object.position);
             controls.addEventListener('dragging-changed', callback)
-            return () => controls.removeEventListener('dragging-changed', callback)
+            return () => controls.removeEventListener('dragging-changed', callback) */
         }
     })
 
@@ -37,7 +36,6 @@ export default function App() {
             if(e.key.toLowerCase() === 'r') {
                 actions.onTransformControlChange();
             }
-            
         }
         document.addEventListener("keydown", testFunc)
         return () => {
@@ -46,7 +44,6 @@ export default function App() {
     }, [])
 
     const renderTiles = () => {
-        console.log(tiles)
         return tiles.length > 0 &&  tiles.map((tile:any, i:number) => {
             return <MeshWithToolkit key={i} Component={tile.component} position={tile.position} rotation={tile.rotation} />
         });
@@ -55,11 +52,11 @@ export default function App() {
     return (
         <Intro>
             <div className="col-end-auto" >
-                <Canvas dpr={[1, 2]} onPointerMissed={() => setSelected(null)}>
+                <Canvas dpr={[1, 2]} onPointerMissed={() => setSelected(null)} color="black">
                     {renderTiles()}
                     {selected && selected.object && <TransformControls size={0.5} ref={transformControls} translationSnap={1} object={selected.object} {...transformControlProps} />}
                     <PerspectiveCamera makeDefault position={[20, 20, 20]} />
-                    <OrbitControls makeDefault />
+                    <OrbitControls maxPolarAngle={Math.PI / 2} makeDefault />
                     <gridHelper args={[100, 100, `#8f8f8f`, `#1f1f1f`]} />
                 </Canvas>
             </div>
