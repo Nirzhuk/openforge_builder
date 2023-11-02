@@ -24,6 +24,7 @@ const MeshWithToolkit = ({ Component, ...props }: any) => {
 export default function App() {
     const { selected, tiles, actions, transformControlProps, setSelected }: any = useStore()
     const transformControls = useRef<TransformControlsImpl>(null!);
+    const ref = useRef<any>();
 
     useEffect(() => {
         const testFunc = (e: any) => {
@@ -42,13 +43,26 @@ export default function App() {
             return <MeshWithToolkit key={i} Component={tile.component} position={tile.position} rotation={tile.rotation} />
         });
     }
-    console.log(selected)
-    return (
+    const handleDragOut = (e: any) => {
+        e.preventDefault();
+      };
+    
+      const handleDrop = (e: any) => {
+        const data = e.dataTransfer.getData("text");
+        console.log('Drag in Canvas', data);
+      };
+      useEffect(() => {
+        let container = ref.current;
+        container.addEventListener("dragover", handleDragOut);
+        return () => {
+            container.removeEventListener("dragover", handleDragOut);
+        };
+      });
+       return (
         <Intro>
             <div className="col-end-auto" >
-                <Canvas dpr={[1, 2]} onPointerMissed={() => setSelected(null)} color="black">
-                <ambientLight intensity={Math.PI / 2} />
-            <spotLight position={[20, 20, 25]} penumbra={1} angle={0.2} color="white" castShadow shadow-mapSize={[512, 512]} />
+                <Canvas dpr={[1, 2]} onPointerMissed={() => setSelected(null)} color="black"  ref={ref} onDrop={handleDrop}>
+                <ambientLight color={'white'} position={[30,0,50]} intensity={Math.PI / 2} castShadow />
 
                     {renderTiles()}
                     {selected && selected.object && <TransformControls size={0.5} ref={transformControls} translationSnap={1} object={selected.object} {...transformControlProps} />}

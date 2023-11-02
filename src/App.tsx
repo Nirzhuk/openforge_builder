@@ -5,6 +5,8 @@ import { useStore } from './store';
 
 const App = () => {
   const { transformControlProps: { mode } } = useStore();
+
+  
   return (
     <div className="font-mono h-full w-full relative grid auto-rows-min">
       <div className="bg-color text-gray-300 h-14 p-2 grid grid-flow-row-dense grid-cols-4">
