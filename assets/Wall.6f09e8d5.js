@@ -1,1 +1,0 @@
-import{R as r,u as t,j as e}from"./index.7bf244c9.js";const n=r.forwardRef((a,l)=>{const{nodes:o}=t("/openforge_builder/wall.glb");return e("mesh",{ref:l,...a,dispose:null,geometry:o.dungeon_stone_wallwallinch2x.geometry,children:e("meshLambertMaterial",{attach:"material",color:"#53523e"})})});export{n as default};
