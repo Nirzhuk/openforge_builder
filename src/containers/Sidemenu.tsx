@@ -21,47 +21,41 @@ const IconDropdown = () => (
 
 );
 
+const sideMenu = [
+    {
+    name: 'Walls',
+    items: [
+        {
+            label: 'Wall',
+            model: 'wall'
+        }
+    ]
+    }
+]
+
 const Menu = () => {
     const { actions } = useStore();
-    const onClickImage = () => {
-        actions.addTile('wall');
+    const onClickImage = (model: string) => {
+        actions.addTile(model);
     }
     return (
         <div className="ui grid w-80">
             <div className="bg-gray-100 p-3 border-gray-500">
+                {sideMenu.map((section) => (
+                                    <Dropdown name={section.name}>
+                                        {section.items.map((item) => (
+                                                                <a
+                                                                href="#"
+                                                                role="menuitem"
+                                                                className="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
+                                                            >
+                                                                <img src={`stone.jpg`} alt="stone" onClick={() => onClickImage(item.model)} height={64} />
+                                                            </a>
+                                        ))}
+                                    </Dropdown>
 
-                <Dropdown name={'Walls'}>
-                    <a
-                        href="#"
-                        role="menuitem"
-                        className="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
-                    >
-                        <img src={`stone.jpg`} alt="stone" onClick={onClickImage} height={64} />
-                    </a>
-                    <a
-                        href="#"
-                        role="menuitem"
-                        className="block p-2 text-sm text-gray-700 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700"
-                    >
-                        Mini + One Columns Sidebar
-                    </a>
-                </Dropdown>
-                <Dropdown name={'Walls'} Icon={IconDropdown}>
-                    <a
-                        href="#"
-                        role="menuitem"
-                        className="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
-                    >
-                        <img src={`stone.jpg`} alt="stone" onClick={onClickImage} height={64} />
-                    </a>
-                    <a
-                        href="#"
-                        role="menuitem"
-                        className="block p-2 text-sm text-gray-700 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700"
-                    >
-                        Mini + One Columns Sidebar
-                    </a>
-                </Dropdown>
+                ))}
+
             </div>
         </div>
     )
