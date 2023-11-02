@@ -10,26 +10,20 @@ const MeshWithToolkit = ({ Component, ...props }: any) => {
     const ref = useRef()
     const [hovered, setHovered] = useState(false)
     useCursor(hovered)
-    return <Component
+    return <group>
+        <Component
         ref={ref}
         {...props}
         onClick={(e: any) => setSelected(e.object,ref)}
         onDrag={(v:any) => console.log(v.toArray())}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)} />
+    </group>
 }
 
 export default function App() {
     const { selected, tiles, actions, transformControlProps, setSelected }: any = useStore()
     const transformControls = useRef<TransformControlsImpl>(null!);
-    useEffect(() => {
-        if (transformControls.current) {
-            const { current: controls } = transformControls
-/*             const callback = (e:any) => console.log(e.target.object.position);
-            controls.addEventListener('dragging-changed', callback)
-            return () => controls.removeEventListener('dragging-changed', callback) */
-        }
-    })
 
     useEffect(() => {
         const testFunc = (e: any) => {
@@ -53,6 +47,9 @@ export default function App() {
         <Intro>
             <div className="col-end-auto" >
                 <Canvas dpr={[1, 2]} onPointerMissed={() => setSelected(null)} color="black">
+                <ambientLight intensity={Math.PI / 2} />
+            <spotLight position={[20, 20, 25]} penumbra={1} angle={0.2} color="white" castShadow shadow-mapSize={[512, 512]} />
+
                     {renderTiles()}
                     {selected && selected.object && <TransformControls size={0.5} ref={transformControls} translationSnap={1} object={selected.object} {...transformControlProps} />}
                     <PerspectiveCamera makeDefault position={[20, 20, 20]} />

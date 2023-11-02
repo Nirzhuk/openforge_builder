@@ -2,15 +2,16 @@ import Editor from './containers/Editor'
 import Sidemenu from './containers/Sidemenu'
 import { useStore } from './store';
 
+
 const App = () => {
-  const {transformControlProps: {mode}} = useStore();
+  const { transformControlProps: { mode } } = useStore();
   return (
     <div className="font-mono h-full w-full relative grid auto-rows-min">
       <div className="bg-color text-gray-300 h-14 p-2 grid grid-flow-row-dense grid-cols-4">
         <div className="col-span-3">
           Openforge Builder
         </div>
-        <div>Left menu</div>
+        <div></div>
       </div>
       <div className="bg-color border-t border-b border-1 border-gray-400 text-gray-300 h-10 p-2 flex justify-center">
         <div className="col-span-3">

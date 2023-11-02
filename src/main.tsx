@@ -11,5 +11,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 )
-useGLTF.preload(`${import.meta.env.BASE_URL}wall.gltf`)
+useGLTF.preload(`${import.meta.env.BASE_URL}wall.glb`)
 
