@@ -10,8 +10,7 @@ const Wall = React.forwardRef((props: any, ref) => {
       ref={ref} {...props} dispose={null}
         geometry={nodes.dungeon_stone_wallwallinch2x.geometry}
       >
-
-        <meshLambertMaterial attach={'material'} color={'#53523e'}></meshLambertMaterial>
+        <meshLambertMaterial attach={'material'} color={props.isSelected ? '#5c4e3b' :'#53523e'}></meshLambertMaterial>
       </mesh>
   );
 });

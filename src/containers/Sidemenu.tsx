@@ -45,7 +45,7 @@ const Menu = () => {
 
   return (
     <div className="ui grid w-80">
-      <div className="bg-gray-100 p-3 border-gray-500">
+      <div className="bg-gray-800 p-3 border-gray-500">
         {sideMenu.map((section) => (
           <Dropdown name={section.name}>
             {section.items.map((item) => (

@@ -12,7 +12,6 @@ const useStore = create((set: any, get: any) => {
     const actions = {
         onTransformControlChange: () => {
             const { transformControlProps: { mode } } = get();
-            console.log(mode)
             if (mode === 'translate') {
                 set({
                     transformControlProps: {
@@ -35,36 +34,79 @@ const useStore = create((set: any, get: any) => {
                 });
             }
         },
-        addTile: (type:string) => {
+        addTile: (type: string) => {
             const { tiles } = get();
 
             const tile = {
-                position: [0,0,0],
-                rotation: [0,0,0],
+                position: [0, 0, 0],
+                rotation: [0, 0, 0],
                 component: tileEnum[type],
             }
-            console.log(tiles)
             set({
                 tiles: [...tiles, tile]
             })
+        },
+        removeTile: (indices: any[]) => {
+            set((state:any) => {
+                const tiles = [...state.tiles]; 
+                const selected = [...state.selected];
+        
+                for (const index of indices) {
+                  if (index >= 0 && index < tiles.length) {
+                    tiles.splice(index, 1); 
+                    selected.splice(index, 1); 
+                  }
+                }
+                console.log(selected)
+                return { tiles, selected };
+              });
         }
     }
     return ({
         ready: false,
-        selected: null,
-        setSelected: (selected: any,ref:any) => {
-            console.log(ref)
-            return set({ selected: {
-                object: selected,
-                ref
-            } })
+        selected: [],
+        setSelectedClean: () => {
+            set((state:any) => {
+                const updatedSelected = [...state.selected]; 
+              
+                updatedSelected.splice(0, updatedSelected.length);
+                return { selected: updatedSelected };
+              });
         },
+        removeSelected: (index: number) => {
+            set((state:any) => {
+                const updatedSelected = [...state.selected]; 
+                if (index >= 0 && index < updatedSelected.length) {
+                  updatedSelected.splice(index, 1); 
+                }
+                return { selected: updatedSelected };
+              });
+        },
+        toggleSelected: (item: any, itemRef: any, index: number) => {
+            set((state:any) => {
+                const updatedSelected = [...state.selected];
+          
+                const existingIndex = updatedSelected.findIndex((selectedItem) => selectedItem.index === index);
+          
+                if (existingIndex === -1) {
+                  updatedSelected.push({ object: item, ref: itemRef, index });
+                } else {
+                  updatedSelected.splice(existingIndex, 1);
+                }
+                console.log(updatedSelected)
+                return { selected: updatedSelected };
+              });
+        },
+
         setReady: (ready: boolean) => set({ ready }),
         set,
         session: null,
         transformControlProps: {
             mode: 'translate',
-            showY: false
+            showY: false,
+            translationSnap: 1,
+            size: 0.5
+
         },
         tiles: [],
         actions
